@@ -3,7 +3,7 @@ vault {
 }
 
 template_config {
-  # Demo-friendly: re-check static secrets often so 30s DBSE rotation is visible quickly.
+  #re-check static secrets often so 30s DBSE rotation is visible quickly.
   static_secret_render_interval = "5s"
 }
 
