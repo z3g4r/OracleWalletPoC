@@ -1,0 +1,524 @@
+┌─(~/Downloads/oracle-wallet-vault-dbse-arm 7-HTTP-JWT)───────────────────────────────────────────────────────────────────────────────────────────────────────────────────(zegar@FlyingCircus:s002)─┐
+└─(12:16:42)──> docker compose up                         ──(Tue,Jun16)─┘
+[+] up 8/8
+ ✔ Network oracle-wallet-vault-dbse-arm7-http-jwt_default      Created                                                                                                                            0.0s
+ ✔ Volume oracle-wallet-vault-dbse-arm7-http-jwt_agent-token   Created                                                                                                                            0.0s
+ ✔ Volume oracle-wallet-vault-dbse-arm7-http-jwt_oracle-wallet Created                                                                                                                            0.0s
+ ✔ Volume oracle-wallet-vault-dbse-arm7-http-jwt_oracle-data   Created                                                                                                                            0.0s
+ ✔ Container oracle-db                                         Created                                                                                                                            0.0s
+ ✔ Container oracle-wallet-app                                 Created                                                                                                                            0.0s
+ ✔ Container vault                                             Created                                                                                                                            0.0s
+ ✔ Container vault-agent                                       Created                                                                                                                            0.0s
+Attaching to oracle-db, oracle-wallet-app, vault, vault-agent
+oracle-db  | CONTAINER: starting up...
+Container oracle-db Waiting
+Container oracle-db Waiting
+oracle-db  | CONTAINER: first database startup, initializing...
+oracle-db  | CONTAINER: uncompressing database data files, please wait...
+oracle-db  | CONTAINER: done uncompressing database data files, duration: 1 seconds.
+oracle-db  | CONTAINER: starting up Oracle Database...
+oracle-db  |
+oracle-db  | LSNRCTL for Linux: Version 23.26.2.0.0 - Production on 16-JUN-2026 10:17:05
+oracle-db  |
+oracle-db  | Copyright (c) 1991, 2026, Oracle.  All rights reserved.
+oracle-db  |
+oracle-db  | Starting /opt/oracle/product/26ai/dbhomeFree/bin/tnslsnr: please wait...
+oracle-db  |
+oracle-db  | TNSLSNR for Linux: Version 23.26.2.0.0 - Production
+oracle-db  | System parameter file is /opt/oracle/product/26ai/dbhomeFree/network/admin/listener.ora
+oracle-db  | Log messages written to /opt/oracle/diag/tnslsnr/5dceb0789346/listener/alert/log.xml
+oracle-db  | Listening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC_FOR_FREE)))
+oracle-db  | Listening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=5dceb0789346)(PORT=1521)))
+oracle-db  |
+oracle-db  | Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=IPC)(KEY=EXTPROC_FOR_FREE)))
+oracle-db  | STATUS of the LISTENER
+oracle-db  | ------------------------
+oracle-db  | Alias                     LISTENER
+oracle-db  | Version                   TNSLSNR for Linux: Version 23.26.2.0.0 - Production
+oracle-db  | Start Date                16-JUN-2026 10:17:05
+oracle-db  | Uptime                    0 days 0 hr. 0 min. 0 sec
+oracle-db  | Trace Level               off
+oracle-db  | Security                  ON: Local OS Authentication
+oracle-db  | SNMP                      OFF
+oracle-db  | Default Service           FREE
+oracle-db  | Listener Parameter File   /opt/oracle/product/26ai/dbhomeFree/network/admin/listener.ora
+oracle-db  | Listener Log File         /opt/oracle/diag/tnslsnr/5dceb0789346/listener/alert/log.xml
+oracle-db  | Listening Endpoints Summary...
+oracle-db  |   (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC_FOR_FREE)))
+oracle-db  |   (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=5dceb0789346)(PORT=1521)))
+oracle-db  | The listener supports no services
+oracle-db  | The command completed successfully
+oracle-db  | ORACLE instance started.
+oracle-db  |
+oracle-db  | Total System Global Area 1603386016 bytes
+oracle-db  | Fixed Size		    5020320 bytes
+oracle-db  | Variable Size		  603979776 bytes
+oracle-db  | Database Buffers	  989855744 bytes
+oracle-db  | Redo Buffers		    4530176 bytes
+oracle-db  | Database mounted.
+oracle-db  | Database opened.
+oracle-db  |
+oracle-db  | CONTAINER: Resetting SYS and SYSTEM passwords.
+oracle-db  |
+oracle-db  | User altered.
+oracle-db  |
+oracle-db  |
+oracle-db  | User altered.
+oracle-db  |
+oracle-db  | CONTAINER: Creating app user for default pluggable database.
+oracle-db  |
+oracle-db  | Session altered.
+oracle-db  |
+oracle-db  |
+oracle-db  | User created.
+oracle-db  |
+oracle-db  |
+oracle-db  | Grant succeeded.
+oracle-db  |
+oracle-db  | CONTAINER: DONE: Creating app user for default pluggable database.
+oracle-db  |
+oracle-db  | CONTAINER: Executing user-defined scripts...
+oracle-db  |
+oracle-db  | CONTAINER: running /container-entrypoint-initdb.d/01-demo.sql ...
+oracle-db  |
+oracle-db  | Session altered.
+oracle-db  |
+oracle-db  |
+oracle-db  | PL/SQL procedure successfully completed.
+oracle-db  |
+oracle-db  |
+oracle-db  | PL/SQL procedure successfully completed.
+oracle-db  |
+oracle-db  | CONTAINER: DONE: running /container-entrypoint-initdb.d/01-demo.sql
+oracle-db  |
+oracle-db  | CONTAINER: DONE: Executing user-defined scripts.
+oracle-db  |
+oracle-db  |
+oracle-db  | #########################
+oracle-db  | DATABASE IS READY TO USE!
+oracle-db  | #########################
+oracle-db  |
+oracle-db  | ####################################################################
+oracle-db  | CONTAINER: The following output is now from the alert_FREE.log file:
+oracle-db  | ####################################################################
+oracle-db  | Thread 1 advanced to log sequence 12 (LGWR switch),  current SCN: 2114869
+oracle-db  |   Current log# 1 seq# 12 mem# 0: /opt/oracle/oradata/FREE/redo01.log
+oracle-db  | Thread 1 cannot allocate new log, sequence 13
+oracle-db  | Checkpoint not complete
+oracle-db  |   Current log# 1 seq# 12 mem# 0: /opt/oracle/oradata/FREE/redo01.log
+oracle-db  | 2026-06-16T10:17:07.437983+00:00
+oracle-db  | Thread 1 advanced to log sequence 13 (LGWR switch),  current SCN: 2114965
+oracle-db  |   Current log# 2 seq# 13 mem# 0: /opt/oracle/oradata/FREE/redo02.log
+oracle-db  | 2026-06-16T10:17:07.476843+00:00
+oracle-db  | Resize operation completed for file# 18, fname /opt/oracle/oradata/FREE/undotbs01.dbf, old size 11264K, new size 21504K
+oracle-db  | 2026-06-16T10:17:07.736708+00:00
+oracle-db  | Thread 1 advanced to log sequence 14 (LGWR switch),  current SCN: 2116913
+oracle-db  |   Current log# 1 seq# 14 mem# 0: /opt/oracle/oradata/FREE/redo01.log
+oracle-db  | Thread 1 cannot allocate new log, sequence 15
+oracle-db  | Checkpoint not complete
+oracle-db  |   Current log# 1 seq# 14 mem# 0: /opt/oracle/oradata/FREE/redo01.log
+oracle-db  | 2026-06-16T10:17:07.899564+00:00
+oracle-db  | Thread 1 advanced to log sequence 15 (LGWR switch),  current SCN: 2116972
+oracle-db  |   Current log# 2 seq# 15 mem# 0: /opt/oracle/oradata/FREE/redo02.log
+oracle-db  | FREEPDB1(3):Resize operation completed for file# 23, fname /opt/oracle/oradata/FREE/FREEPDB1/undotbs01.dbf, old size 11264K, new size 21504K
+Container oracle-db Healthy
+Container oracle-db Healthy
+vault      | 10:17:08Z [vault] running: vault status -format=json
+vault      | ==> Vault server configuration:
+vault      |
+vault      | Administrative Namespace:
+vault      |              Api Address: http://0.0.0.0:8200
+vault      |                      Cgo: disabled
+vault      |          Cluster Address: https://0.0.0.0:8201
+vault      |    Environment Variables: APP_INITIAL_PASSWORD, APP_USER, DB_HOST, DB_PORT, DB_SERVICE, HOME, HOSTNAME, LC_CTYPE, LD_LIBRARY_PATH, ORACLE_PASSWORD, PATH, ROTATION_PERIOD, VAULT_ADDR, VAULT_DEV_LISTEN_ADDRESS, VAULT_DEV_ROOT_TOKEN_ID, VAULT_PLUGIN_DIR, VAULT_TOKEN
+vault      |               Go Version: go1.22.2
+vault      |               Listener 1: tcp (addr: "0.0.0.0:8200", cluster address: "0.0.0.0:8201", disable_request_limiter: "false", max_request_duration: "1m30s", max_request_size: "33554432", tls: "disabled")
+oracle-wallet-app  | 10:17:08Z [oracle-wallet-app] wallet HTTP server listening address=0.0.0.0:8080; waiting for signed vault-agent update_wallet requests
+
+
+vault              |                Log Level:
+vault              |                    Mlock: supported: true, enabled: false
+vault              |            Recovery Mode: false
+vault              |                  Storage: inmem
+vault              |                  Version: Vault v1.16.3, built 2024-05-29T14:28:42Z
+vault              |              Version Sha: e92d9a57018f43360e2e3717b3b6a7f650c88f4c
+vault              |
+vault              | 10:17:08Z [vault] stderr: Error checking seal status: Get "http://127.0.0.1:8200/v1/sys/seal-status": dial tcp 127.0.0.1:8200: connect: connection refused
+vault              | 2026-06-16T10:17:08.918Z [INFO]  configuring client automatic mTLS
+vault              | 2026-06-16T10:17:08.924Z [INFO]  vault-plugin-database-oracle: configuring server automatic mTLS: timestamp=2026-06-16T10:17:08.924Z
+vault              | 2026-06-16T10:17:08.932Z [INFO]  plugin process exited: plugin=/vault/plugins/vault-plugin-database-oracle id=47
+vault              | 2026-06-16T10:17:08.865Z [INFO]  proxy environment: http_proxy="" https_proxy="" no_proxy=""
+vault              | 2026-06-16T10:17:08.865Z [INFO]  incrementing seal generation: generation=1
+vault              | 2026-06-16T10:17:08.865Z [WARN]  no `api_addr` value specified in config or in VAULT_API_ADDR; falling back to detection if possible, but this value should be manually set
+vault              | 2026-06-16T10:17:08.865Z [INFO]  core: Initializing version history cache for core
+vault              | 2026-06-16T10:17:08.865Z [INFO]  events: Starting event system
+vault              | 2026-06-16T10:17:08.865Z [INFO]  core: security barrier not initialized
+vault              | 2026-06-16T10:17:08.865Z [INFO]  core: security barrier initialized: stored=1 shares=1 threshold=1
+vault              | 2026-06-16T10:17:08.866Z [INFO]  core: post-unseal setup starting
+vault              | 2026-06-16T10:17:08.868Z [INFO]  core: loaded wrapping token key
+vault              | 2026-06-16T10:17:08.868Z [INFO]  core: successfully setup plugin runtime catalog
+
+
+vault              | 2026-06-16T10:17:08.868Z [INFO]  core: successfully setup plugin catalog: plugin-directory=/vault/plugins
+vault-agent        | 10:17:08Z [vault-agent] Vault API reachable
+
+
+vault-agent        | 10:17:08Z [vault-agent] starting official Vault Agent in process-supervisor mode
+vault              | 2026-06-16T10:17:08.868Z [INFO]  core: no mounts; adding default mount table
+vault-agent        | 10:17:08Z [vault-agent] Vault Agent env_template watches database/static-creds/app-user-wallet
+
+vault              | 2026-06-16T10:17:08.869Z [INFO]  core: successfully mounted: type=cubbyhole version="v1.16.3+builtin.vault" path=cubbyhole/ namespace="ID: root. Path: "
+
+
+vault-agent        | 10:17:08Z [vault-agent] on secret change Vault Agent restarts update-wallet.py with DB_USERNAME/DB_PASSWORD/ROTATION_MARKER env vars
+
+
+vault              | 2026-06-16T10:17:08.869Z [INFO]  core: successfully mounted: type=system version="v1.16.3+builtin.vault" path=sys/ namespace="ID: root. Path: "
+vault              | 2026-06-16T10:17:08.869Z [INFO]  core: successfully mounted: type=identity version="v1.16.3+builtin.vault" path=identity/ namespace="ID: root. Path: "
+vault              | 2026-06-16T10:17:08.869Z [INFO]  core: successfully mounted: type=token version="v1.16.3+builtin.vault" path=token/ namespace="ID: root. Path: "
+vault              | 2026-06-16T10:17:08.869Z [INFO]  rollback: Starting the rollback manager with 256 workers
+vault              | 2026-06-16T10:17:08.870Z [INFO]  core: restoring leases
+vault              | 2026-06-16T10:17:08.870Z [INFO]  rollback: starting rollback manager
+vault              | 2026-06-16T10:17:08.870Z [INFO]  expiration: lease restore complete
+vault              | 2026-06-16T10:17:08.870Z [INFO]  identity: entities restored
+vault              | 2026-06-16T10:17:08.870Z [INFO]  identity: groups restored
+vault              | 2026-06-16T10:17:08.870Z [INFO]  core: Recorded vault version: vault version=1.16.3 upgrade time="2026-06-16 10:17:08.870623379 +0000 UTC" build date=2024-05-29T14:28:42Z
+vault              | 2026-06-16T10:17:08.870Z [INFO]  core: post-unseal setup complete
+vault              | 2026-06-16T10:17:08.870Z [INFO]  core: root token generated
+vault              | 2026-06-16T10:17:08.870Z [INFO]  core: pre-seal teardown starting
+vault              | 2026-06-16T10:17:08.870Z [INFO]  rollback: stopping rollback manager
+vault              | 2026-06-16T10:17:08.871Z [INFO]  core: pre-seal teardown complete
+
+
+vault-agent        | ==> Vault Agent started! Log data will stream in below:
+vault              | 2026-06-16T10:17:08.871Z [INFO]  core.cluster-listener.tcp: starting listener: listener_address=0.0.0.0:8201
+
+
+vault              | 2026-06-16T10:17:08.871Z [INFO]  core.cluster-listener: serving cluster requests: cluster_listen_address=[::]:8201
+vault-agent        |
+
+
+vault              | 2026-06-16T10:17:08.871Z [INFO]  core: post-unseal setup starting
+
+
+
+vault-agent        | ==> Vault Agent configuration:
+vault              | 2026-06-16T10:17:08.871Z [INFO]  core: loaded wrapping token key
+
+
+vault-agent        |
+vault              | 2026-06-16T10:17:08.871Z [INFO]  core: successfully setup plugin runtime catalog
+
+
+
+
+vault-agent        |            Api Address 1: http://bufconn
+vault              | 2026-06-16T10:17:08.871Z [INFO]  core: successfully setup plugin catalog: plugin-directory=/vault/plugins
+
+
+
+
+vault-agent        |                      Cgo: disabled
+vault              | 2026-06-16T10:17:08.871Z [INFO]  core: successfully mounted: type=system version="v1.16.3+builtin.vault" path=sys/ namespace="ID: root. Path: "
+vault              | 2026-06-16T10:17:08.871Z [INFO]  core: successfully mounted: type=identity version="v1.16.3+builtin.vault" path=identity/ namespace="ID: root. Path: "
+vault-agent        |                Log Level:
+
+
+vault              | 2026-06-16T10:17:08.871Z [INFO]  core: successfully mounted: type=cubbyhole version="v1.16.3+builtin.vault" path=cubbyhole/ namespace="ID: root. Path: "
+
+vault-agent        |                  Version: Vault v1.16.3, built 2024-05-29T14:28:42Z
+
+
+vault              | 2026-06-16T10:17:08.873Z [INFO]  core: successfully mounted: type=token version="v1.16.3+builtin.vault" path=token/ namespace="ID: root. Path: "
+
+vault-agent        |              Version Sha: e92d9a57018f43360e2e3717b3b6a7f650c88f4c
+
+
+vault              | 2026-06-16T10:17:08.873Z [INFO]  rollback: Starting the rollback manager with 256 workers
+vault-agent        |
+
+
+vault              | 2026-06-16T10:17:08.873Z [INFO]  core: restoring leases
+
+vault-agent        | 2026-06-16T10:17:08.956Z [INFO]  agent.sink.file: creating file sink
+
+vault              | 2026-06-16T10:17:08.873Z [INFO]  rollback: starting rollback manager
+
+
+vault-agent        | 2026-06-16T10:17:08.956Z [INFO]  agent.sink.file: file sink configured: path=/vault/token/agent-token mode=-rw-r-----
+
+vault              | 2026-06-16T10:17:08.873Z [INFO]  expiration: lease restore complete
+vault-agent        | 2026-06-16T10:17:08.956Z [INFO]  agent.exec.server: starting exec server
+
+vault              | 2026-06-16T10:17:08.874Z [INFO]  identity: entities restored
+
+vault-agent        | 2026-06-16T10:17:08.956Z [INFO]  agent: (runner) creating new runner (dry: true, once: false)
+
+vault              | 2026-06-16T10:17:08.874Z [INFO]  identity: groups restored
+
+
+
+v View in Docker Desktop   o View Config   l View Logs   w Enable Watch   d Detachvault-agent        | 2026-06-16T10:17:08.956Z [INFO]  agent: (runner) creating watcher
+vault              | 2026-06-16T10:17:08.874Z [INFO]  core: post-unseal setup complete
+
+
+vault-agent        | 2026-06-16T10:17:08.956Z [INFO]  agent.auth.handler: starting auth handler
+vault              | 2026-06-16T10:17:08.874Z [INFO]  core: vault is unsealed
+
+vault-agent        | 2026-06-16T10:17:08.956Z [INFO]  agent.auth.handler: authenticating
+vault              | 2026-06-16T10:17:08.875Z [INFO]  expiration: revoked lease: lease_id=auth/token/root/hf7e839a89b90d0aab7be6aa4555d4692b66ffa88927157c1f495e7f97c8880b7
+
+
+vault-agent        | 2026-06-16T10:17:08.956Z [INFO]  agent.sink.server: starting sink server
+
+vault              | 2026-06-16T10:17:08.877Z [INFO]  core: successful mount: namespace="" path=secret/ type=kv version="v0.17.0+builtin"
+
+
+vault-agent        | 2026-06-16T10:17:08.956Z [INFO]  agent.template.server: starting template server
+vault              | ==> Vault server started! Log data will stream in below:
+
+
+vault-agent        | 2026-06-16T10:17:08.956Z [INFO]  agent.template.server: no templates found
+vault              |
+
+
+
+
+vault-agent        | 2026-06-16T10:17:08.957Z [INFO]  agent.auth.handler: authentication successful, sending token to sinks
+vault-agent        | 2026-06-16T10:17:08.957Z [INFO]  agent.auth.handler: not starting token renewal process, as token is root token
+vault-agent        | 2026-06-16T10:17:08.957Z [INFO]  agent.exec.server: exec server received new token
+vault-agent        | 2026-06-16T10:17:08.957Z [INFO]  agent: (runner) stopping
+vault-agent        | 2026-06-16T10:17:08.957Z [INFO]  agent: (runner) creating new runner (dry: true, once: false)
+vault-agent        | 2026-06-16T10:17:08.957Z [INFO]  agent: (runner) creating watcher
+vault-agent        | 2026-06-16T10:17:08.957Z [INFO]  agent: (runner) starting
+vault-agent        | 2026-06-16T10:17:08.957Z [INFO]  agent.sink.file: token written: path=/vault/token/agent-token
+vault-agent        | 2026-06-16T10:17:08.958Z [WARN]  agent: vault.read(database/static-creds/app-user-wallet): failed to check if database/static-creds/app-user-wallet is KVv2, assume not: Error making API request.
+vault-agent        |
+vault-agent        | URL: GET http://vault:8200/v1/sys/internal/ui/mounts/database/static-creds/app-user-wallet
+vault-agent        | Code: 403. Errors:
+vault-agent        |
+vault-agent        | * preflight capability check returned 403, please ensure client's policies grant access to path "database/static-creds/app-user-wallet/"
+vault-agent        | 2026-06-16T10:17:08.958Z [WARN]  agent: (view) vault.read(database/static-creds/app-user-wallet): no secret exists at database/static-creds/app-user-wallet (retry attempt 1 after "250ms")
+vault              | WARNING! dev mode is enabled! In this mode, Vault runs entirely in-memory
+vault              | and starts unsealed with a single unseal key. The root token is already
+vault              | authenticated to the CLI, so you can immediately begin using Vault.
+vault              |
+vault              | You may need to set the following environment variables:
+vault              |
+vault              |     $ export VAULT_ADDR='http://0.0.0.0:8200'
+vault              |
+vault              | The unseal key and root token are displayed below in case you want to
+vault              | seal/unseal the Vault or re-authenticate.
+vault              |
+vault              | Unseal Key: ++WkuwBvEetZDCdI2gC20uNNIO4zOIJgeUl7uaTlEwQ=
+vault              | Root Token: root
+vault              |
+vault              | The following dev plugins are registered in the catalog:
+vault              |     - vault-plugin-database-oracle
+vault              |
+vault              | Development mode should NOT be used in production installations!
+vault              |
+vault-agent        | 2026-06-16T10:17:09.213Z [WARN]  agent: (view) vault.read(database/static-creds/app-user-wallet): no secret exists at database/static-creds/app-user-wallet (retry attempt 2 after "500ms")
+vault-agent        | 2026-06-16T10:17:09.715Z [WARN]  agent: (view) vault.read(database/static-creds/app-user-wallet): no secret exists at database/static-creds/app-user-wallet (retry attempt 3 after "1s")
+vault              | 10:17:09Z [vault] running: vault status -format=json
+vault              | 10:17:09Z [vault] running: vault secrets enable database
+vault              | 2026-06-16T10:17:10.114Z [INFO]  secrets.database.database_aae03cb4: initializing database rotation queue
+vault              | 2026-06-16T10:17:10.114Z [INFO]  core: successful mount: namespace="" path=database/ type=database version="v1.16.3+builtin.vault"
+vault              | 10:17:10Z [vault] running: vault write sys/plugins/catalog/database/vault-plugin-database-oracle sha256=b899aad2e4dcbf657e94ee1663318e57c2c97b3b04fd8456395c7aa96592534f command=vault-plugin-database-oracle
+vault              | 2026-06-16T10:17:10.124Z [INFO]  secrets.database.database_aae03cb4: populating role rotation queue
+vault              | 2026-06-16T10:17:10.124Z [INFO]  secrets.database.database_aae03cb4: starting periodic ticker
+vault              | 2026-06-16T10:17:10.150Z [INFO]  configuring client automatic mTLS
+vault              | 2026-06-16T10:17:10.156Z [INFO]  vault-plugin-database-oracle: configuring server automatic mTLS: timestamp=2026-06-16T10:17:10.156Z
+vault              | 2026-06-16T10:17:10.164Z [INFO]  plugin process exited: plugin=/vault/plugins/vault-plugin-database-oracle id=90
+vault              | 10:17:10Z [vault] running: vault write database/config/oracle-free plugin_name=vault-plugin-database-oracle allowed_roles=app-user-wallet connection_url={{username}}/{{password}}@//oracle-db:1521/FREEPDB1 username=system ***
+vault              | 2026-06-16T10:17:10.193Z [INFO]  secrets.database.database_aae03cb4.vault-plugin-database-oracle: configuring client automatic mTLS
+vault              | 2026-06-16T10:17:10.199Z [INFO]  secrets.database.database_aae03cb4.vault-plugin-database-oracle.vault-plugin-database-oracle: configuring server automatic mTLS: timestamp=2026-06-16T10:17:10.199Z
+vault              | 10:17:10Z [vault] running: vault write database/static-roles/app-user-wallet db_name=oracle-free username=app_user rotation_period=30s rotation_statements=ALTER USER {{username}} IDENTIFIED BY "{{password}}" ACCOUNT UNLOCK
+vault              | 10:17:10Z [vault] running: vault write -force database/rotate-role/app-user-wallet
+vault              | 10:17:10Z [vault] DBSE static role configured role=app-user-wallet user=app_user rotation_period=30s
+vault              | 10:17:10Z [vault] Vault ready: Database Secrets Engine owns app_user password rotation
+vault-agent        | 2026-06-16T10:17:10.721Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:17:10.722Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:17:10.722Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:17:12.728Z [INFO]  agent.exec.server: [INFO] (child) spawning: python3 /vault/project/scripts/update-wallet.py
+vault-agent        | 10:17:12Z [vault-agent] Vault Agent process supervisor triggered wallet update marker=last_vault_rotation:2026-06-16T10:17:10.282725379Z username=app_user
+vault-agent        | 10:17:12Z [vault-agent] signing wallet update JWT issuer=vault-agent audience=oracle-wallet-app marker=last_vault_rotation:2026-06-16T10:17:10.282725379Z
+vault-agent        | 10:17:12Z [vault-agent] sending HTTP update_wallet request url=http://oracle-wallet-app:8080/wallet/update
+oracle-wallet-app  | 10:17:12Z [oracle-wallet-app] verified wallet update JWT issuer=vault-agent subject=wallet-update marker=last_vault_rotation:2026-06-16T10:17:10.282725379Z
+oracle-wallet-app  | 10:17:12Z [oracle-wallet-app] update request received username=app_user marker=last_vault_rotation:2026-06-16T10:17:10.282725379Z
+oracle-wallet-app  | 10:17:12Z [oracle-wallet-app] creating Oracle Secure External Password Store wallet dir=/opt/oracle/wallet/password-store
+oracle-wallet-app  | 10:17:12Z [oracle-wallet-app] updating wallet alias=FREEPDB1_WALLET username=app_user marker=last_vault_rotation:2026-06-16T10:17:10.282725379Z
+oracle-wallet-app  | 10:17:13Z [oracle-wallet-app] Oracle Net config ready alias=FREEPDB1_WALLET target=oracle-db:1521/FREEPDB1
+oracle-wallet-app  | 10:17:13Z [oracle-wallet-app] wallet login test ok user=APP_USER
+oracle-wallet-app  | 10:17:13Z [oracle-wallet-app] http "POST /wallet/update HTTP/1.1" 200 -
+vault-agent        | 10:17:13Z [vault-agent] oracle-wallet-app acknowledged wallet update marker=last_vault_rotation:2026-06-16T10:17:10.282725379Z oracle_user=APP_USER
+vault-agent        | 10:17:13Z [vault-agent] rotation handled end-to-end: Vault DBSE -> Vault Agent env_template/process-supervisor -> signed HTTP -> Oracle wallet -> sqlplus
+vault-agent        | 10:17:13Z [vault-agent] update-wallet.py child is idle; waiting for Vault Agent to restart it on the next secret change
+vault-agent        | 2026-06-16T10:17:41.727Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:17:41.727Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:17:41.728Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:17:43.729Z [INFO]  agent.exec.server: stopping process: process_id=28
+vault-agent        | 2026-06-16T10:17:43.729Z [INFO]  agent.exec.server: [INFO] (child) stopping process
+vault-agent        | 10:17:43Z [vault-agent] process supervisor stop signal received signum=15; exiting child
+vault-agent        | 2026-06-16T10:18:10.732Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:18:10.733Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:18:10.733Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:18:13.731Z [INFO]  agent.exec.server: [INFO] (child) spawning: python3 /vault/project/scripts/update-wallet.py
+vault-agent        | 2026-06-16T10:18:13.733Z [INFO]  agent.exec.server: stopping process: process_id=30
+vault-agent        | 2026-06-16T10:18:13.733Z [INFO]  agent.exec.server: [INFO] (child) stopping process
+vault-agent        | 2026-06-16T10:18:13.733Z [INFO]  agent.exec.server: [INFO] (child) spawning: python3 /vault/project/scripts/update-wallet.py
+vault-agent        | 10:18:13Z [vault-agent] Vault Agent process supervisor triggered wallet update marker=last_vault_rotation:2026-06-16T10:18:10.135269796Z username=app_user
+vault-agent        | 10:18:13Z [vault-agent] signing wallet update JWT issuer=vault-agent audience=oracle-wallet-app marker=last_vault_rotation:2026-06-16T10:18:10.135269796Z
+vault-agent        | 10:18:13Z [vault-agent] sending HTTP update_wallet request url=http://oracle-wallet-app:8080/wallet/update
+oracle-wallet-app  | 10:18:13Z [oracle-wallet-app] verified wallet update JWT issuer=vault-agent subject=wallet-update marker=last_vault_rotation:2026-06-16T10:18:10.135269796Z
+oracle-wallet-app  | 10:18:13Z [oracle-wallet-app] update request received username=app_user marker=last_vault_rotation:2026-06-16T10:18:10.135269796Z
+oracle-wallet-app  | 10:18:13Z [oracle-wallet-app] updating wallet alias=FREEPDB1_WALLET username=app_user marker=last_vault_rotation:2026-06-16T10:18:10.135269796Z
+oracle-wallet-app  | 10:18:14Z [oracle-wallet-app] Oracle Net config ready alias=FREEPDB1_WALLET target=oracle-db:1521/FREEPDB1
+oracle-wallet-app  | 10:18:14Z [oracle-wallet-app] wallet login test ok user=APP_USER
+oracle-wallet-app  | 10:18:14Z [oracle-wallet-app] http "POST /wallet/update HTTP/1.1" 200 -
+vault-agent        | 10:18:14Z [vault-agent] oracle-wallet-app acknowledged wallet update marker=last_vault_rotation:2026-06-16T10:18:10.135269796Z oracle_user=APP_USER
+vault-agent        | 10:18:14Z [vault-agent] rotation handled end-to-end: Vault DBSE -> Vault Agent env_template/process-supervisor -> signed HTTP -> Oracle wallet -> sqlplus
+vault-agent        | 10:18:14Z [vault-agent] update-wallet.py child is idle; waiting for Vault Agent to restart it on the next secret change
+vault-agent        | 2026-06-16T10:18:40.738Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:18:40.739Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:18:40.739Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:18:42.739Z [INFO]  agent.exec.server: stopping process: process_id=31
+vault-agent        | 2026-06-16T10:18:42.740Z [INFO]  agent.exec.server: [INFO] (child) stopping process
+vault-agent        | 10:18:42Z [vault-agent] process supervisor stop signal received signum=15; exiting child
+vault-agent        | 2026-06-16T10:19:10.743Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:19:10.743Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:19:10.743Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:19:12.741Z [INFO]  agent.exec.server: [INFO] (child) spawning: python3 /vault/project/scripts/update-wallet.py
+vault-agent        | 2026-06-16T10:19:12.745Z [INFO]  agent.exec.server: stopping process: process_id=33
+vault-agent        | 2026-06-16T10:19:12.745Z [INFO]  agent.exec.server: [INFO] (child) stopping process
+vault-agent        | 2026-06-16T10:19:12.746Z [INFO]  agent.exec.server: [INFO] (child) spawning: python3 /vault/project/scripts/update-wallet.py
+vault-agent        | 10:19:12Z [vault-agent] Vault Agent process supervisor triggered wallet update marker=last_vault_rotation:2026-06-16T10:19:10.135023046Z username=app_user
+vault-agent        | 10:19:12Z [vault-agent] signing wallet update JWT issuer=vault-agent audience=oracle-wallet-app marker=last_vault_rotation:2026-06-16T10:19:10.135023046Z
+vault-agent        | 10:19:12Z [vault-agent] sending HTTP update_wallet request url=http://oracle-wallet-app:8080/wallet/update
+oracle-wallet-app  | 10:19:12Z [oracle-wallet-app] verified wallet update JWT issuer=vault-agent subject=wallet-update marker=last_vault_rotation:2026-06-16T10:19:10.135023046Z
+oracle-wallet-app  | 10:19:12Z [oracle-wallet-app] update request received username=app_user marker=last_vault_rotation:2026-06-16T10:19:10.135023046Z
+oracle-wallet-app  | 10:19:12Z [oracle-wallet-app] updating wallet alias=FREEPDB1_WALLET username=app_user marker=last_vault_rotation:2026-06-16T10:19:10.135023046Z
+oracle-wallet-app  | 10:19:13Z [oracle-wallet-app] Oracle Net config ready alias=FREEPDB1_WALLET target=oracle-db:1521/FREEPDB1
+oracle-wallet-app  | 10:19:13Z [oracle-wallet-app] wallet login test ok user=APP_USER
+oracle-wallet-app  | 10:19:13Z [oracle-wallet-app] http "POST /wallet/update HTTP/1.1" 200 -
+vault-agent        | 10:19:13Z [vault-agent] oracle-wallet-app acknowledged wallet update marker=last_vault_rotation:2026-06-16T10:19:10.135023046Z oracle_user=APP_USER
+vault-agent        | 10:19:13Z [vault-agent] rotation handled end-to-end: Vault DBSE -> Vault Agent env_template/process-supervisor -> signed HTTP -> Oracle wallet -> sqlplus
+vault-agent        | 10:19:13Z [vault-agent] update-wallet.py child is idle; waiting for Vault Agent to restart it on the next secret change
+vault-agent        | 2026-06-16T10:19:40.758Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:19:40.758Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:19:40.759Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:19:42.761Z [INFO]  agent.exec.server: stopping process: process_id=34
+vault-agent        | 2026-06-16T10:19:42.761Z [INFO]  agent.exec.server: [INFO] (child) stopping process
+vault-agent        | 10:19:42Z [vault-agent] process supervisor stop signal received signum=15; exiting child
+vault-agent        | 2026-06-16T10:20:10.789Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:20:10.789Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:20:10.790Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:20:12.788Z [INFO]  agent.exec.server: [INFO] (child) spawning: python3 /vault/project/scripts/update-wallet.py
+vault-agent        | 2026-06-16T10:20:12.793Z [INFO]  agent.exec.server: stopping process: process_id=36
+vault-agent        | 2026-06-16T10:20:12.793Z [INFO]  agent.exec.server: [INFO] (child) stopping process
+vault-agent        | 2026-06-16T10:20:12.794Z [INFO]  agent.exec.server: [INFO] (child) spawning: python3 /vault/project/scripts/update-wallet.py
+vault-agent        | 10:20:12Z [vault-agent] Vault Agent process supervisor triggered wallet update marker=last_vault_rotation:2026-06-16T10:20:10.170586504Z username=app_user
+vault-agent        | 10:20:12Z [vault-agent] signing wallet update JWT issuer=vault-agent audience=oracle-wallet-app marker=last_vault_rotation:2026-06-16T10:20:10.170586504Z
+vault-agent        | 10:20:12Z [vault-agent] sending HTTP update_wallet request url=http://oracle-wallet-app:8080/wallet/update
+oracle-wallet-app  | 10:20:12Z [oracle-wallet-app] verified wallet update JWT issuer=vault-agent subject=wallet-update marker=last_vault_rotation:2026-06-16T10:20:10.170586504Z
+oracle-wallet-app  | 10:20:12Z [oracle-wallet-app] update request received username=app_user marker=last_vault_rotation:2026-06-16T10:20:10.170586504Z
+oracle-wallet-app  | 10:20:12Z [oracle-wallet-app] updating wallet alias=FREEPDB1_WALLET username=app_user marker=last_vault_rotation:2026-06-16T10:20:10.170586504Z
+oracle-wallet-app  | 10:20:13Z [oracle-wallet-app] Oracle Net config ready alias=FREEPDB1_WALLET target=oracle-db:1521/FREEPDB1
+oracle-wallet-app  | 10:20:13Z [oracle-wallet-app] wallet login test ok user=APP_USER
+oracle-wallet-app  | 10:20:13Z [oracle-wallet-app] http "POST /wallet/update HTTP/1.1" 200 -
+vault-agent        | 10:20:13Z [vault-agent] oracle-wallet-app acknowledged wallet update marker=last_vault_rotation:2026-06-16T10:20:10.170586504Z oracle_user=APP_USER
+vault-agent        | 10:20:13Z [vault-agent] rotation handled end-to-end: Vault DBSE -> Vault Agent env_template/process-supervisor -> signed HTTP -> Oracle wallet -> sqlplus
+vault-agent        | 10:20:13Z [vault-agent] update-wallet.py child is idle; waiting for Vault Agent to restart it on the next secret change
+vault-agent        | 2026-06-16T10:20:40.797Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:20:40.797Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:20:40.797Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:20:42.799Z [INFO]  agent.exec.server: stopping process: process_id=37
+vault-agent        | 2026-06-16T10:20:42.799Z [INFO]  agent.exec.server: [INFO] (child) stopping process
+vault-agent        | 10:20:42Z [vault-agent] process supervisor stop signal received signum=15; exiting child
+vault-agent        | 2026-06-16T10:21:10.803Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:21:10.804Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:21:10.804Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:21:12.802Z [INFO]  agent.exec.server: [INFO] (child) spawning: python3 /vault/project/scripts/update-wallet.py
+vault-agent        | 2026-06-16T10:21:12.805Z [INFO]  agent.exec.server: stopping process: process_id=39
+vault-agent        | 2026-06-16T10:21:12.805Z [INFO]  agent.exec.server: [INFO] (child) stopping process
+vault-agent        | 2026-06-16T10:21:12.806Z [INFO]  agent.exec.server: [INFO] (child) spawning: python3 /vault/project/scripts/update-wallet.py
+vault-agent        | 10:21:12Z [vault-agent] Vault Agent process supervisor triggered wallet update marker=last_vault_rotation:2026-06-16T10:21:10.178054004Z username=app_user
+vault-agent        | 10:21:12Z [vault-agent] signing wallet update JWT issuer=vault-agent audience=oracle-wallet-app marker=last_vault_rotation:2026-06-16T10:21:10.178054004Z
+vault-agent        | 10:21:12Z [vault-agent] sending HTTP update_wallet request url=http://oracle-wallet-app:8080/wallet/update
+oracle-wallet-app  | 10:21:12Z [oracle-wallet-app] verified wallet update JWT issuer=vault-agent subject=wallet-update marker=last_vault_rotation:2026-06-16T10:21:10.178054004Z
+oracle-wallet-app  | 10:21:12Z [oracle-wallet-app] update request received username=app_user marker=last_vault_rotation:2026-06-16T10:21:10.178054004Z
+oracle-wallet-app  | 10:21:12Z [oracle-wallet-app] updating wallet alias=FREEPDB1_WALLET username=app_user marker=last_vault_rotation:2026-06-16T10:21:10.178054004Z
+oracle-wallet-app  | 10:21:13Z [oracle-wallet-app] Oracle Net config ready alias=FREEPDB1_WALLET target=oracle-db:1521/FREEPDB1
+oracle-wallet-app  | 10:21:13Z [oracle-wallet-app] wallet login test ok user=APP_USER
+oracle-wallet-app  | 10:21:13Z [oracle-wallet-app] http "POST /wallet/update HTTP/1.1" 200 -
+vault-agent        | 10:21:13Z [vault-agent] oracle-wallet-app acknowledged wallet update marker=last_vault_rotation:2026-06-16T10:21:10.178054004Z oracle_user=APP_USER
+vault-agent        | 10:21:13Z [vault-agent] rotation handled end-to-end: Vault DBSE -> Vault Agent env_template/process-supervisor -> signed HTTP -> Oracle wallet -> sqlplus
+vault-agent        | 10:21:13Z [vault-agent] update-wallet.py child is idle; waiting for Vault Agent to restart it on the next secret change
+vault-agent        | 2026-06-16T10:21:40.812Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:21:40.812Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:21:40.812Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:21:42.812Z [INFO]  agent.exec.server: stopping process: process_id=40
+vault-agent        | 2026-06-16T10:21:42.813Z [INFO]  agent.exec.server: [INFO] (child) stopping process
+vault-agent        | 10:21:42Z [vault-agent] process supervisor stop signal received signum=15; exiting child
+oracle-db          | 2026-06-16T10:22:08.319761+00:00
+oracle-db          | Thread 1 advanced to log sequence 16 (LGWR switch),  current SCN: 2118341
+oracle-db          |   Current log# 1 seq# 16 mem# 0: /opt/oracle/oradata/FREE/redo01.log
+vault-agent        | 2026-06-16T10:22:10.821Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:22:10.821Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:22:10.821Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:22:12.816Z [INFO]  agent.exec.server: [INFO] (child) spawning: python3 /vault/project/scripts/update-wallet.py
+vault-agent        | 2026-06-16T10:22:12.822Z [INFO]  agent.exec.server: stopping process: process_id=42
+vault-agent        | 2026-06-16T10:22:12.822Z [INFO]  agent.exec.server: [INFO] (child) stopping process
+vault-agent        | 2026-06-16T10:22:12.822Z [INFO]  agent.exec.server: [INFO] (child) spawning: python3 /vault/project/scripts/update-wallet.py
+vault-agent        | 10:22:12Z [vault-agent] Vault Agent process supervisor triggered wallet update marker=last_vault_rotation:2026-06-16T10:22:10.172548213Z username=app_user
+vault-agent        | 10:22:12Z [vault-agent] signing wallet update JWT issuer=vault-agent audience=oracle-wallet-app marker=last_vault_rotation:2026-06-16T10:22:10.172548213Z
+vault-agent        | 10:22:12Z [vault-agent] sending HTTP update_wallet request url=http://oracle-wallet-app:8080/wallet/update
+oracle-wallet-app  | 10:22:12Z [oracle-wallet-app] verified wallet update JWT issuer=vault-agent subject=wallet-update marker=last_vault_rotation:2026-06-16T10:22:10.172548213Z
+oracle-wallet-app  | 10:22:12Z [oracle-wallet-app] update request received username=app_user marker=last_vault_rotation:2026-06-16T10:22:10.172548213Z
+oracle-wallet-app  | 10:22:12Z [oracle-wallet-app] updating wallet alias=FREEPDB1_WALLET username=app_user marker=last_vault_rotation:2026-06-16T10:22:10.172548213Z
+oracle-wallet-app  | 10:22:13Z [oracle-wallet-app] Oracle Net config ready alias=FREEPDB1_WALLET target=oracle-db:1521/FREEPDB1
+oracle-wallet-app  | 10:22:13Z [oracle-wallet-app] wallet login test ok user=APP_USER
+oracle-wallet-app  | 10:22:13Z [oracle-wallet-app] http "POST /wallet/update HTTP/1.1" 200 -
+vault-agent        | 10:22:13Z [vault-agent] oracle-wallet-app acknowledged wallet update marker=last_vault_rotation:2026-06-16T10:22:10.172548213Z oracle_user=APP_USER
+vault-agent        | 10:22:13Z [vault-agent] rotation handled end-to-end: Vault DBSE -> Vault Agent env_template/process-supervisor -> signed HTTP -> Oracle wallet -> sqlplus
+vault-agent        | 10:22:13Z [vault-agent] update-wallet.py child is idle; waiting for Vault Agent to restart it on the next secret change
+vault-agent        | 2026-06-16T10:22:40.827Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_USERNAME"
+vault-agent        | 2026-06-16T10:22:40.827Z [INFO]  agent: (runner) rendered "(dynamic)" => "DB_PASSWORD"
+vault-agent        | 2026-06-16T10:22:40.828Z [INFO]  agent: (runner) rendered "(dynamic)" => "ROTATION_MARKER"
+vault-agent        | 2026-06-16T10:22:42.828Z [INFO]  agent.exec.server: stopping process: process_id=43
+vault-agent        | 2026-06-16T10:22:42.828Z [INFO]  agent.exec.server: [INFO] (child) stopping process
+vault-agent        | 10:22:42Z [vault-agent] process supervisor stop signal received signum=15; exiting child
+Gracefully Stopping... press Ctrl+C again to force
+Container vault-agent Stopping
+vault-agent        | 2026-06-16T10:22:43.455Z [INFO]  agent.auth.handler: shutdown triggered, stopping lifetime watcher
+vault-agent        | 2026-06-16T10:22:43.455Z [INFO]  agent.auth.handler: auth handler stopped
+vault-agent        | 2026-06-16T10:22:43.455Z [INFO]  agent: (runner) stopping
+vault-agent        | ==> Vault Agent shutdown triggered
+vault-agent        | 2026-06-16T10:22:43.455Z [INFO]  agent: (runner) received finish
+vault-agent        | 2026-06-16T10:22:43.455Z [INFO]  agent.template.server: template server stopped
+vault-agent        | 2026-06-16T10:22:43.455Z [INFO]  agent.sink.server: sink server stopped
+vault-agent        | 2026-06-16T10:22:43.455Z [INFO]  agent: sinks finished, exiting
+Container vault-agent Stopped
+Container vault Stopping
+Container oracle-wallet-app Stopping
+vault-agent exited with code 137
+Container oracle-wallet-app Stopped
+oracle-wallet-app exited with code 137
+Container vault Stopped
+Container oracle-db Stopping
+vault exited with code 137
+oracle-db          | CONTAINER: shutdown request received.
+oracle-db          | CONTAINER: shutting down database!
+oracle-db          |
+oracle-db          | LSNRCTL for Linux: Version 23.26.2.0.0 - Production on 16-JUN-2026 10:22:45
+oracle-db          |
+oracle-db          | Copyright (c) 1991, 2026, Oracle.  All rights reserved.
+oracle-db          |
+oracle-db          | Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=IPC)(KEY=EXTPROC_FOR_FREE)))
+oracle-db          | The command completed successfully
+oracle-db          | Database closed.
+oracle-db          | Database dismounted.
+oracle-db          | ORACLE instance shut down.
+oracle-db          | CONTAINER: stopping container.
+Container oracle-db Stopped
+oracle-db exited with code 143
