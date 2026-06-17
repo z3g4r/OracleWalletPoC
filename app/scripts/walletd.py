@@ -205,12 +205,12 @@ class WalletRequestHandler(BaseHTTPRequestHandler):
             if not auth.startswith("Bearer "):
                 raise PermissionError("missing Bearer token")
             token = auth[len("Bearer "):].strip()
-            claims = verify_jwt(token)
+            claims = verify_jwt(token) ### TOKEN VERIFICATION
             length = int(self.headers.get("Content-Length", "0"))
             if length <= 0 or length > 1024 * 1024:
                 raise ValueError("invalid request body length")
             payload = json.loads(self.rfile.read(length).decode("utf-8"))
-            response = handle_request(payload, claims)
+            response = handle_request(payload, claims) ### PROCESSING START
             self.write_json(200, response)
         except PermissionError as exc:
             log(f"wallet update request rejected: {exc}")
