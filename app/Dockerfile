@@ -6,9 +6,9 @@ USER root
 # runtime/classpath for mkstore, so provide a deterministic wrapper.
 ARG ORACLE_PKI_VERSION=19.3.0.0
 RUN set -eux; \
-    microdnf install -y python3 findutils procps-ng curl ca-certificates unzip openssl java-17-openjdk-headless || \
-    microdnf install -y python3 findutils procps-ng curl ca-certificates unzip openssl java-11-openjdk-headless || \
-    microdnf install -y python3 findutils procps-ng curl ca-certificates unzip openssl java-latest-openjdk-headless; \
+    microdnf install -y python3 findutils procps-ng curl ca-certificates unzip java-17-openjdk-headless || \
+    microdnf install -y python3 findutils procps-ng curl ca-certificates unzip java-11-openjdk-headless || \
+    microdnf install -y python3 findutils procps-ng curl ca-certificates unzip java-latest-openjdk-headless; \
     microdnf clean all; \
     java_bin="$(readlink -f /usr/bin/java)"; \
     java_home="$(dirname "$(dirname "$java_bin")")"; \

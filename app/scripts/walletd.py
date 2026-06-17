@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-import base64
 import json
 import os
+import socket
 import subprocess
 import sys
-import tempfile
 import time
 from datetime import datetime, timezone
-from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
+SOCKET_PATH = Path(os.environ.get("WALLETD_SOCKET", "/run/wallet-control/walletd.sock"))
 WALLET_ROOT = Path("/opt/oracle/wallet")
 WALLET_DIR = WALLET_ROOT / "password-store"
 NETWORK_DIR = WALLET_ROOT / "network" / "admin"
@@ -18,12 +17,6 @@ DB_HOST = os.environ.get("DB_HOST", "oracle-db")
 DB_PORT = os.environ.get("DB_PORT", "1521")
 DB_SERVICE = os.environ.get("DB_SERVICE", "FREEPDB1")
 WALLET_PASSWORD = os.environ.get("WALLET_PASSWORD", "WalletPassword1")
-HTTP_HOST = os.environ.get("WALLET_HTTP_HOST", "0.0.0.0")
-HTTP_PORT = int(os.environ.get("WALLET_HTTP_PORT", "8080"))
-JWT_PUBLIC_KEY_PATH = os.environ.get("JWT_PUBLIC_KEY_PATH", "/run/wallet-jwt/public.pem")
-JWT_ISSUER = os.environ.get("JWT_ISSUER", "vault-agent")
-JWT_AUDIENCE = os.environ.get("JWT_AUDIENCE", "oracle-wallet-app")
-JWT_CLOCK_SKEW_SECONDS = int(os.environ.get("JWT_CLOCK_SKEW_SECONDS", "5"))
 
 
 def ts():
@@ -43,56 +36,6 @@ def run(cmd, input_text=None, env=None):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-
-
-def b64url_decode(text):
-    return base64.urlsafe_b64decode((text + "=" * (-len(text) % 4)).encode("ascii"))
-
-
-def verify_rs256(signing_input, signature):
-    with tempfile.NamedTemporaryFile(prefix="wallet-jwt-sig-", delete=True) as sig_file, \
-            tempfile.NamedTemporaryFile(prefix="wallet-jwt-input-", delete=True) as input_file:
-        sig_file.write(signature)
-        sig_file.flush()
-        input_file.write(signing_input)
-        input_file.flush()
-        proc = subprocess.run(
-            ["openssl", "dgst", "-sha256", "-verify", JWT_PUBLIC_KEY_PATH, "-signature", sig_file.name, input_file.name],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-    if proc.returncode != 0:
-        raise PermissionError("JWT signature verification failed")
-
-
-def verify_jwt(token):
-    try:
-        header_b64, claims_b64, sig_b64 = token.split(".")
-    except ValueError:
-        raise PermissionError("invalid JWT format")
-    signing_input = f"{header_b64}.{claims_b64}".encode("ascii")
-    header = json.loads(b64url_decode(header_b64).decode("utf-8"))
-    claims = json.loads(b64url_decode(claims_b64).decode("utf-8"))
-    signature = b64url_decode(sig_b64)
-    if header.get("alg") != "RS256" or header.get("typ") != "JWT":
-        raise PermissionError("unsupported JWT header")
-    verify_rs256(signing_input, signature)
-
-    now = int(time.time())
-    if claims.get("iss") != JWT_ISSUER:
-        raise PermissionError("invalid JWT issuer")
-    aud = claims.get("aud")
-    if aud != JWT_AUDIENCE and not (isinstance(aud, list) and JWT_AUDIENCE in aud):
-        raise PermissionError("invalid JWT audience")
-    if claims.get("sub") != "wallet-update":
-        raise PermissionError("invalid JWT subject")
-    if int(claims.get("nbf", 0)) > now + JWT_CLOCK_SKEW_SECONDS:
-        raise PermissionError("JWT not yet valid")
-    if int(claims.get("exp", 0)) < now - JWT_CLOCK_SKEW_SECONDS:
-        raise PermissionError("JWT expired")
-    if "jti" not in claims:
-        raise PermissionError("JWT missing jti")
-    return claims
 
 
 def write_net_config():
@@ -155,7 +98,7 @@ def login_test():
     return oracle_user
 
 
-def handle_request(payload, claims):
+def handle_request(payload):
     action = payload.get("action")
     if action != "update_wallet":
         raise ValueError(f"unsupported action: {action}")
@@ -163,72 +106,49 @@ def handle_request(payload, claims):
     password = payload.get("password")
     marker = payload.get("rotation_marker") or "unknown"
     alias = payload.get("alias") or TNS_ALIAS
-    if claims.get("rotation_marker") != marker:
-        raise PermissionError("JWT rotation_marker does not match request body")
     if alias != TNS_ALIAS:
         raise ValueError(f"unexpected alias: {alias}; expected {TNS_ALIAS}")
     if not username or not password:
         raise ValueError("username/password are required")
-    log(f"verified wallet update JWT issuer={claims.get('iss')} subject={claims.get('sub')} marker={marker}")
     log(f"update request received username={username} marker={marker}")
     update_wallet(username, password, marker)
     oracle_user = login_test()
     return {"status": "ok", "oracle_user": oracle_user, "rotation_marker": marker}
 
 
-class WalletRequestHandler(BaseHTTPRequestHandler):
-    server_version = "walletd-http/1.0"
-
-    def log_message(self, fmt, *args):
-        log("http " + fmt % args)
-
-    def write_json(self, status, payload):
-        raw = (json.dumps(payload, sort_keys=True) + "\n").encode("utf-8")
-        self.send_response(status)
-        self.send_header("Content-Type", "application/json")
-        self.send_header("Content-Length", str(len(raw)))
-        self.end_headers()
-        self.wfile.write(raw)
-
-    def do_GET(self):
-        if self.path == "/healthz":
-            self.write_json(200, {"status": "ok"})
-        else:
-            self.write_json(404, {"status": "error", "message": "not found"})
-
-    def do_POST(self):
-        if self.path != "/wallet/update":
-            self.write_json(404, {"status": "error", "message": "not found"})
-            return
-        try:
-            auth = self.headers.get("Authorization", "")
-            if not auth.startswith("Bearer "):
-                raise PermissionError("missing Bearer token")
-            token = auth[len("Bearer "):].strip()
-            claims = verify_jwt(token)
-            length = int(self.headers.get("Content-Length", "0"))
-            if length <= 0 or length > 1024 * 1024:
-                raise ValueError("invalid request body length")
-            payload = json.loads(self.rfile.read(length).decode("utf-8"))
-            response = handle_request(payload, claims)
-            self.write_json(200, response)
-        except PermissionError as exc:
-            log(f"wallet update request rejected: {exc}")
-            self.write_json(401, {"status": "error", "message": str(exc)})
-        except Exception as exc:
-            log(f"wallet update request failed: {exc}")
-            self.write_json(500, {"status": "error", "message": str(exc)})
-
-
 def serve():
-    for p in (WALLET_DIR, NETWORK_DIR):
+    for p in (WALLET_DIR, NETWORK_DIR, SOCKET_PATH.parent):
         p.mkdir(parents=True, exist_ok=True)
-    server = HTTPServer((HTTP_HOST, HTTP_PORT), WalletRequestHandler)
-    log(f"wallet HTTP server listening address={HTTP_HOST}:{HTTP_PORT}; waiting for signed vault-agent update_wallet requests")
+    if SOCKET_PATH.exists():
+        SOCKET_PATH.unlink()
+    sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    sock.bind(str(SOCKET_PATH))
+    os.chmod(str(SOCKET_PATH), 0o666)
+    sock.listen(5)
+    log(f"walletd listening socket={SOCKET_PATH}; waiting for vault-agent update_wallet requests")
     try:
-        server.serve_forever()
+        while True:
+            conn, _ = sock.accept()
+            with conn:
+                raw = b""
+                while not raw.endswith(b"\n"):
+                    chunk = conn.recv(65536)
+                    if not chunk:
+                        break
+                    raw += chunk
+                try:
+                    payload = json.loads(raw.decode("utf-8"))
+                    response = handle_request(payload)
+                except Exception as exc:
+                    log(f"wallet update request failed: {exc}")
+                    response = {"status": "error", "message": str(exc)}
+                conn.sendall((json.dumps(response, sort_keys=True) + "\n").encode("utf-8"))
     finally:
-        server.server_close()
+        sock.close()
+        try:
+            SOCKET_PATH.unlink()
+        except FileNotFoundError:
+            pass
 
 
 if __name__ == "__main__":

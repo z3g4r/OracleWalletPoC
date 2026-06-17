@@ -49,15 +49,14 @@ services:
     environment:
       VAULT_ADDR: ${VAULT_ADDR:-http://vault:8200}
       VAULT_TOKEN: ${VAULT_TOKEN:-root}
+      WALLETD_SOCKET: /run/wallet-control/walletd.sock
       TNS_ALIAS: ${TNS_ALIAS:-FREEPDB1_WALLET}
-      WALLET_APP_URL: ${WALLET_APP_URL:-http://oracle-wallet-app:8080/wallet/update}
-      JWT_PRIVATE_KEY_PATH: /run/wallet-jwt/private.pem
-      JWT_ISSUER: ${JWT_ISSUER:-vault-agent}
-      JWT_AUDIENCE: ${JWT_AUDIENCE:-oracle-wallet-app}
-      JWT_TTL_SECONDS: ${JWT_TTL_SECONDS:-60}
+      SOCKET_WAIT_SECONDS: ${SOCKET_WAIT_SECONDS:-60}
     volumes:
       - agent-token:/vault/token
-      - ./jwt-keys/agent-private.pem:/run/wallet-jwt/private.pem:ro
+      - wallet-control:/run/wallet-control
+    tmpfs:
+      - /run/vault-rendered:mode=0777
     depends_on:
       vault:
         condition: service_started
@@ -74,16 +73,10 @@ services:
       DB_PORT: ${DB_PORT:-1521}
       DB_SERVICE: ${DB_SERVICE:-FREEPDB1}
       WALLET_PASSWORD: ${WALLET_PASSWORD:-WalletPassword1}
-      WALLET_HTTP_HOST: ${WALLET_HTTP_HOST:-0.0.0.0}
-      WALLET_HTTP_PORT: ${WALLET_HTTP_PORT:-8080}
-      JWT_PUBLIC_KEY_PATH: /run/wallet-jwt/public.pem
-      JWT_ISSUER: ${JWT_ISSUER:-vault-agent}
-      JWT_AUDIENCE: ${JWT_AUDIENCE:-oracle-wallet-app}
-    expose:
-      - "8080"
+      WALLETD_SOCKET: /run/wallet-control/walletd.sock
     volumes:
       - oracle-wallet:/opt/oracle/wallet
-      - ./jwt-keys/agent-public.pem:/run/wallet-jwt/public.pem:ro
+      - wallet-control:/run/wallet-control
     depends_on:
       oracle-db:
         condition: service_healthy
@@ -92,3 +85,4 @@ volumes:
   oracle-data:
   agent-token:
   oracle-wallet:
+  wallet-control:

@@ -2,11 +2,6 @@ vault {
   address = "http://vault:8200"
 }
 
-template_config {
-  # Demo-friendly: re-check static secrets often so 30s DBSE rotation is visible quickly.
-  static_secret_render_interval = "5s"
-}
-
 auto_auth {
   method "token_file" {
     config = {
@@ -22,23 +17,27 @@ auto_auth {
   }
 }
 
-env_template "DB_USERNAME" {
-  contents = "{{ with secret \"database/static-creds/app-user-wallet\" }}{{ .Data.username }}{{ end }}"
-  error_on_missing_key = true
+template_config {
+  # Keep the PoC responsive. Static DBSE credentials with rotation_period are
+  # refreshed by Vault Agent based on secret timing; this also keeps generic
+  # static-secret rendering short if Vault treats a response as non-leased.
+  static_secret_render_interval = "5s"
 }
 
-env_template "DB_PASSWORD" {
-  contents = "{{ with secret \"database/static-creds/app-user-wallet\" }}{{ .Data.password }}{{ end }}"
-  error_on_missing_key = true
-}
+template {
+  destination = "/run/vault-rendered/static-creds.json"
+  perms       = "0600"
+  command     = "python3 /vault/project/scripts/update-wallet.py /run/vault-rendered/static-creds.json"
+  command_timeout = "60s"
 
-env_template "ROTATION_MARKER" {
-  contents = "{{ with secret \"database/static-creds/app-user-wallet\" }}last_vault_rotation:{{ .Data.last_vault_rotation }}{{ end }}"
-  error_on_missing_key = true
+  contents = <<EOH
+{{- with secret "database/static-creds/app-user-wallet" -}}
+{
+  "action": "update_wallet",
+  "username": "{{ .Data.username }}",
+  "password": "{{ .Data.password }}",
+  "rotation_marker": "last_vault_rotation:{{ .Data.last_vault_rotation }}"
 }
-
-exec {
-  command = ["python3", "/vault/project/scripts/update-wallet.py"]
-  restart_on_secret_changes = "always"
-  restart_stop_signal = "SIGTERM"
+{{- end -}}
+EOH
 }
