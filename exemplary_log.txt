@@ -1,4 +1,4 @@
-┌─(~/Downloads/oracle-wallet-vault-dbse-arm 7-HTTP-JWT)───────────────────────────────────────────────────────────────────────────────────────────────────────────────────(zegar@FlyingCircus:s002)─┐
+┌─(~/GitRepos/OracleWalletPoC)───────────────────────────────────────────────────────────────────────────────────────────────────────────────────(zegar@FlyingCircus:s002)─┐
 └─(12:16:42)──> docker compose up                         ──(Tue,Jun16)─┘
 [+] up 8/8
  ✔ Network oracle-wallet-vault-dbse-arm7-http-jwt_default      Created                                                                                                                            0.0s
