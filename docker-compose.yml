@@ -1,0 +1,94 @@
+services:
+  oracle-db:
+    image: gvenzl/oracle-free:23-slim
+    container_name: oracle-db
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:-OraclePassword1}
+      APP_USER: ${APP_USER:-app_user}
+      APP_USER_PASSWORD: ${APP_INITIAL_PASSWORD:-AppPassword1}
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - ./oracle/init:/container-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh"]
+      interval: 15s
+      timeout: 10s
+      retries: 40
+      start_period: 120s
+
+  vault:
+    build:
+      context: ./vault
+    container_name: vault
+    environment:
+      VAULT_ADDR: http://127.0.0.1:8200
+      VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_TOKEN:-root}
+      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
+      VAULT_TOKEN: ${VAULT_TOKEN:-root}
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:-OraclePassword1}
+      APP_USER: ${APP_USER:-app_user}
+      APP_INITIAL_PASSWORD: ${APP_INITIAL_PASSWORD:-AppPassword1}
+      DB_HOST: ${DB_HOST:-oracle-db}
+      DB_PORT: ${DB_PORT:-1521}
+      DB_SERVICE: ${DB_SERVICE:-FREEPDB1}
+      ROTATION_PERIOD: ${ROTATION_PERIOD:-30s}
+    ports:
+      - "8200:8200"
+    depends_on:
+      oracle-db:
+        condition: service_healthy
+    cap_add:
+      - IPC_LOCK
+
+  vault-agent:
+    build:
+      context: ./agent
+    container_name: vault-agent
+    environment:
+      VAULT_ADDR: ${VAULT_ADDR:-http://vault:8200}
+      VAULT_TOKEN: ${VAULT_TOKEN:-root}
+      TNS_ALIAS: ${TNS_ALIAS:-FREEPDB1_WALLET}
+      WALLET_APP_URL: ${WALLET_APP_URL:-http://oracle-wallet-app:8080/wallet/update}
+      JWT_PRIVATE_KEY_PATH: /run/wallet-jwt/private.pem
+      JWT_ISSUER: ${JWT_ISSUER:-vault-agent}
+      JWT_AUDIENCE: ${JWT_AUDIENCE:-oracle-wallet-app}
+      JWT_TTL_SECONDS: ${JWT_TTL_SECONDS:-60}
+    volumes:
+      - agent-token:/vault/token
+      - ./jwt-keys/agent-private.pem:/run/wallet-jwt/private.pem:ro
+    depends_on:
+      vault:
+        condition: service_started
+      oracle-wallet-app:
+        condition: service_started
+
+  oracle-wallet-app:
+    build:
+      context: ./app
+    container_name: oracle-wallet-app
+    environment:
+      TNS_ALIAS: ${TNS_ALIAS:-FREEPDB1_WALLET}
+      DB_HOST: ${DB_HOST:-oracle-db}
+      DB_PORT: ${DB_PORT:-1521}
+      DB_SERVICE: ${DB_SERVICE:-FREEPDB1}
+      WALLET_PASSWORD: ${WALLET_PASSWORD:-WalletPassword1}
+      WALLET_HTTP_HOST: ${WALLET_HTTP_HOST:-0.0.0.0}
+      WALLET_HTTP_PORT: ${WALLET_HTTP_PORT:-8080}
+      JWT_PUBLIC_KEY_PATH: /run/wallet-jwt/public.pem
+      JWT_ISSUER: ${JWT_ISSUER:-vault-agent}
+      JWT_AUDIENCE: ${JWT_AUDIENCE:-oracle-wallet-app}
+    expose:
+      - "8080"
+    volumes:
+      - oracle-wallet:/opt/oracle/wallet
+      - ./jwt-keys/agent-public.pem:/run/wallet-jwt/public.pem:ro
+    depends_on:
+      oracle-db:
+        condition: service_healthy
+
+volumes:
+  oracle-data:
+  agent-token:
+  oracle-wallet:
